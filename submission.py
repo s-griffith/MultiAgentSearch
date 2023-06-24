@@ -4,46 +4,23 @@ import random
 import time
 import math
 
-
+#should I be taking into account the other robot's position? If it's free and closer to the package I want to pick up?
 def smart_heuristic(env: WarehouseEnv, robot_id: int):
     robot = env.get_robot(robot_id)
     #If the robot is not carrying a package, find the closest one and see if reachable:
     if not env.robot_is_occupied(robot_id):
-        myDist0 = manhattan_distance(robot.position, env.packages[0].position)
-        rivalDist0 = manhattan_distance(env.packages[0].position, env.get_robot(1-robot_id).position)
-        points0 = manhattan_distance(env.packages[0].position, env.packages[0].destination) * 2
         dist = math.inf
         y = -math.inf
-        #Rival is free:
+        if env.robot_is_occupied(1-robot_id) or (manhattan_distance(env.packages[0].position, env.get_robot(1-robot_id).position) > 1):
+            dist = manhattan_distance(robot.position, env.packages[0].position)
+            y = manhattan_distance(env.packages[0].position, env.packages[0].destination) * 2
         if env.packages[1].on_board:
-            myDist1 = manhattan_distance(robot.position, env.packages[1].position)
-            rivalDist1 = manhattan_distance(env.packages[1].position, env.get_robot(1-robot_id).position)
-            points1 = manhattan_distance(env.packages[1].position, env.packages[1].destination) * 2
-            if rivalDist1 < myDist1 and rivalDist0 >= myDist0: #rival is closer to 1, further from 0
-                dist = myDist0
-                y = points0
-            elif rivalDist0 < myDist0 and rivalDist1 >= myDist1: #rival is closer to 0, further from 1
-                dist = myDist1
-                y = points1
-            elif rivalDist0 >= myDist0 and rivalDist1 >= myDist1: #rival is further from both
-                dist = min(myDist0, myDist1)
-                y = max(points0, points1)
-            elif rivalDist0 < myDist0 and rivalDist1 < myDist1: #rival is closer to both
-                #Choose the package the rival is further from
-                if rivalDist0 < rivalDist1:
-                    dist = myDist1
-                    y = points1
-                elif rivalDist1 < rivalDist0:
-                    dist = myDist0
-                    y = points0
-                #If the rival is equidistant, choose the package closer to me
-                elif rivalDist0 == rivalDist1:
-                    dist = min(myDist0, myDist1)
-                    y = max(points0, points1)
-        #Rival is not free - get the remaining package
-        else:
-            dist = min(myDist0, dist)
-            y = points0
+            if env.robot_is_occupied(1-robot_id) or (manhattan_distance(env.packages[1].position, env.get_robot(1-robot_id).position) > 1):
+                dist = min(dist, manhattan_distance(robot.position, env.packages[1].position))
+                y = max(y, (manhattan_distance(env.packages[1].position, env.packages[1].destination) * 2))
+            elif manhattan_distance(env.packages[0].position, env.get_robot(1-robot_id).position) <= 1 and manhattan_distance(env.packages[1].position, env.get_robot(1-robot_id).position) <= 1:
+                dist = min(manhattan_distance(robot.position, env.packages[0].position), manhattan_distance(robot.position, env.packages[1].position))
+                y = max(manhattan_distance(env.packages[0].position, env.packages[0].destination) * 2, manhattan_distance(env.packages[1].position, env.packages[1].destination) * 2)
         x = 1/(dist + 1) + 100*robot.credit
     #If the robot is carrying a package, see if the destination is reachable:
     else:
@@ -96,7 +73,7 @@ class AgentMinimax(Agent):
 
 
     def run_step(self, env: WarehouseEnv, agent_id, time_limit):
-        limit = time.time() + time_limit - 0.001
+        limit = time.time() + time_limit - 0.01
         moves, _ = self.successors(env, agent_id)
         moves_return = random.choice(moves)
         depth = 1
@@ -148,7 +125,7 @@ class AgentAlphaBeta(Agent):
 
     # TODO: section c : 1
     def run_step(self, env: WarehouseEnv, agent_id, time_limit):
-        limit = time.time() + time_limit - 0.001
+        limit = time.time() + time_limit - 0.01
         moves, _ = self.successors(env, agent_id)
         moves_return = random.choice(moves)
         depth = 1
@@ -205,7 +182,7 @@ class AgentExpectimax(Agent):
 
     # TODO: section d : 1
     def run_step(self, env: WarehouseEnv, agent_id, time_limit):
-        limit = time.time() + time_limit - 0.001
+        limit = time.time() + time_limit - 0.01
         moves, _ = self.successors(env, agent_id)
         moves_return = random.choice(moves)
         depth = 1
