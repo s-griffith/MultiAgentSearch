@@ -9,18 +9,11 @@ def smart_heuristic(env: WarehouseEnv, robot_id: int):
     robot = env.get_robot(robot_id)
     #If the robot is not carrying a package, find the closest one and see if reachable:
     if not env.robot_is_occupied(robot_id):
-        dist = math.inf
-        y = -math.inf
-        if env.robot_is_occupied(1-robot_id) or (manhattan_distance(env.packages[0].position, env.get_robot(1-robot_id).position) > 1):
-            dist = manhattan_distance(robot.position, env.packages[0].position)
-            y = manhattan_distance(env.packages[0].position, env.packages[0].destination) * 2
+        dist = manhattan_distance(robot.position, env.packages[0].position)
+        y = (manhattan_distance(env.packages[0].position, env.packages[0].destination) * 2)
         if env.packages[1].on_board:
-            if env.robot_is_occupied(1-robot_id) or (manhattan_distance(env.packages[1].position, env.get_robot(1-robot_id).position) > 1):
-                dist = min(dist, manhattan_distance(robot.position, env.packages[1].position))
-                y = max(y, (manhattan_distance(env.packages[1].position, env.packages[1].destination) * 2))
-            elif manhattan_distance(env.packages[0].position, env.get_robot(1-robot_id).position) <= 1 and manhattan_distance(env.packages[1].position, env.get_robot(1-robot_id).position) <= 1:
-                dist = min(manhattan_distance(robot.position, env.packages[0].position), manhattan_distance(robot.position, env.packages[1].position))
-                y = max(manhattan_distance(env.packages[0].position, env.packages[0].destination) * 2, manhattan_distance(env.packages[1].position, env.packages[1].destination) * 2)
+            dist = min(dist, manhattan_distance(robot.position, env.packages[1].position))
+            y = max(y, (manhattan_distance(env.packages[1].position, env.packages[1].destination) * 2))
         x = 1/(dist + 1) + 100*robot.credit
     #If the robot is carrying a package, see if the destination is reachable:
     else:
