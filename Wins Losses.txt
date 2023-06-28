@@ -1,0 +1,91 @@
+Make win 70% of time against random and greedy 
+100 runs:
+
+Minimax Random:
+Robot 0 wins:  90
+Robot 1 wins:  1
+Draws:  9
+
+Improved Greedy Random:
+Robot 0 wins:  94
+Robot 1 wins:  0
+Draws:  6
+
+Expectimax Random:
+Robot 0 wins:  96
+Robot 1 wins:  0
+Draws:  4
+
+AlphaBeta Random:
+Robot 0 wins:  92
+Robot 1 wins:  0
+Draws:  8
+
+Minimax Greedy:
+Robot 0 wins:  79
+Robot 1 wins:  0
+Draws:  21
+
+GreedyImproved Greedy:
+Robot 0 wins:  80
+Robot 1 wins:  0
+Draws:  20
+
+
+AlphaBeta Greedy:
+Robot 0 wins:  84
+Robot 1 wins:  0
+Draws:  16
+
+Expectimax Greedy:
+Robot 0 wins:  89
+Robot 1 wins:  0
+Draws:  11
+
+
+Final Runs:
+
+Minimax Random:
+Robot 0 wins:  92
+Robot 1 wins:  0
+Draws:  8
+
+Improved Greedy Random:
+Robot 0 wins:  94
+Robot 1 wins:  0
+Draws:  6
+
+Expectimax Random:  
+Robot 0 wins:  95
+Robot 1 wins:  0
+Draws:  5
+
+
+AlphaBeta Random:   
+Robot 0 wins:  92
+Robot 1 wins:  0
+Draws:  8
+
+
+Minimax Greedy:     
+Robot 0 wins:  85
+Robot 1 wins:  0
+Draws:  15
+
+
+Improved Greedy Greedy:    
+Robot 0 wins:  80
+Robot 1 wins:  0
+Draws:  20
+
+
+Expectimax Greedy:
+Robot 0 wins: 90      
+Robot 1 wins:  0
+Draws:  10
+
+
+AlphaBeta Greedy:    
+Robot 0 wins:  85
+Robot 1 wins:  0
+Draws:  15
